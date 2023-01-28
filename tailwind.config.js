@@ -1,7 +1,9 @@
 module.exports = {
+  //папка в прокте для компиляции
   content: ["./resources/views/*.blade.php"],
   darkMode: 'media',
   theme: {
+    //размерная сетка
     screens: {
       'xs': '375px',
       'sm': '540px',
@@ -28,6 +30,7 @@ module.exports = {
       '3xl': ['96px', '1.1em'],
     },
     extend: {
+      //расширяем переменные
       colors: {
         white: "#FFF",
         purple: "#7843E9",
