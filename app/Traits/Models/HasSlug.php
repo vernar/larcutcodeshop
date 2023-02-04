@@ -3,7 +3,6 @@
 namespace App\Traits\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 trait HasSlug
 {
@@ -20,8 +19,9 @@ trait HasSlug
                     $newSlugName = $slugName.'-'.$slugSuffix;
                     $slugSuffix++;
                 } while ($itemsWithSameSlug->where('slug', $newSlugName)->count() > 0);
-                $model->slug = $newSlugName;
+                $slugName = $newSlugName;
             }
+            $model->slug = $slugName;
         });
     }
 
