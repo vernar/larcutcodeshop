@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Http\Kernel;
 use Carbon\CarbonInterval;
-use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -32,10 +31,10 @@ class AppServiceProvider extends ServiceProvider
         Model::shouldBeStrict();
 
 //        if (app()->isProduction()) {}
-        DB::whenQueryingForLongerThan(500, function (Connection $connection) {
-            Log::channel('telegram')
-                ->debug('whenTotalQueryingForLongerThan: '.$connection->query()->toSql());
-        });
+//        DB::whenQueryingForLongerThan(500, function (Connection $connection) {
+//            Log::channel('telegram')
+//                ->debug('whenTotalQueryingForLongerThan: '.$connection->query()->toSql());
+//        });
         DB::listen(function ($query) {
             if ($query->time > 1000) {
                 $queryString = vsprintf(
@@ -46,9 +45,8 @@ class AppServiceProvider extends ServiceProvider
                     ->debug('whenQueryingForLongerThan: '.$queryString);
             }
         });
-        /** @var Kernel $kernel */
-        $kernel = app(Kernel::class);
-        $kernel->whenRequestLifecycleIsLongerThan(
+
+        app(Kernel::class)->whenRequestLifecycleIsLongerThan(
             CarbonInterval::seconds(4),
             function () {
                 Log::channel('telegram')
