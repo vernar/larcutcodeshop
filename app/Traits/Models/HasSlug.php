@@ -12,7 +12,16 @@ trait HasSlug
         parent::boot();
 
         static::creating(function (Model $model) {
-            $model->slug   = $model->slug ?? str($model->{self::slugFrom()})->slug();
+            $slugName          = $model->slug ?? str($model->{self::slugFrom()})->slug();
+            $itemsWithSameSlug = self::where('slug', 'like', "$slugName%")->get();
+            if ($itemsWithSameSlug->count()) {
+                $slugSuffix = 2;
+                do {
+                    $newSlugName = $slugName.'-'.$slugSuffix;
+                    $slugSuffix++;
+                } while ($itemsWithSameSlug->where('slug', $newSlugName)->count() > 0);
+                $model->slug = $newSlugName;
+            }
         });
     }
 

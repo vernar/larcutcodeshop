@@ -39,4 +39,22 @@ class Product extends Model
     {
         return $this->belongsToMany(Category::class);
     }
+
+    public static function createTestProducts($count = 1): void
+    {
+        $faker = Faker::create();
+        /** @var Collection $brandsIds */
+        $brandsIds = Brand::limit(100)->pluck('id');
+
+        for ($i = 0; $i < $count; $i++) {
+            $product           = new Product();
+            $product->title    = ucfirst($faker->word(2, true));
+            $product->brand_id = $brandsIds->count() > 0 ? $brandsIds->random() : null;
+            $product->price    = $faker->numberBetween(1000, 100000);
+            $product->slug     = 'super-unique-url-key';
+            dump($product);
+            $product->save();
+        }
+    }
+
 }
