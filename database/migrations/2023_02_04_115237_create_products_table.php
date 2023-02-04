@@ -19,14 +19,16 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->string('slug');
-            $table->string('thumbnail');
+            $table->string('thumbnail')
+                ->nullable();
             $table->unsignedInteger('price')
                 ->default(0);
 
             $table->foreignIdFor(Brand::class)
+                ->nullable()
                 ->constrained()
                 ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+                ->nullOnDelete();
 
             $table->timestamps();
         });
