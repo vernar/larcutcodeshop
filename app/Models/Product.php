@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasSlug;
+use Faker\Factory as Faker;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 
 /**
  * @property string title Product Title
@@ -16,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Product extends Model
 {
     use HasFactory;
+    use HasSlug;
 
     protected $fillable = [
         'title',
@@ -25,14 +29,6 @@ class Product extends Model
         'thumbnail',
     ];
 
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        static::creating(function (Product $product) {
-            $product->slug = $product->slug ?? str($product->title)->slug();
-        });
-    }
 
     public function brand(): BelongsTo
     {
@@ -43,5 +39,4 @@ class Product extends Model
     {
         return $this->belongsToMany(Category::class);
     }
-
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasSlug;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Brand extends Model
 {
     use HasFactory;
+    use HasSlug;
 
     /**
      * @var string[]
@@ -23,19 +25,6 @@ class Brand extends Model
         'title',
         'thumbnail',
     ];
-
-
-    /**
-     * @return void
-     */
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        static::creating(function (Brand $brand) {
-            $brand->slug = $brand->slug ?? str($brand->title)->slug();
-        });
-    }
 
     public function products(): HasMany
     {
