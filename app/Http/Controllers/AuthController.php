@@ -32,7 +32,6 @@ class AuthController extends Controller
 
     public function loginPost(LoginPostFormRequest $request): RedirectResponse
     {
-        // TODO 3.1 Rate Limit
         if (!auth()->attempt($request->validated())) {
             return back()->withErrors([
                 'email' => 'Пользователь не найден',
@@ -84,11 +83,13 @@ class AuthController extends Controller
         $status = Password::sendResetLink(
             $request->only('email')
         );
+        if ($status === Password::RESET_LINK_SENT) {
+            flash()->info(__($status));
 
-        // TODO 3.1 flash
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with(['message' => __($status)])
-            : back()->withErrors(['email' => __($status)]);
+            return back();
+        }
+
+        return back()->withErrors(['email' => __($status)]);
     }
 
     public function resetPassword(string $token): Factory|View|Application
@@ -113,9 +114,13 @@ class AuthController extends Controller
             }
         );
 
-        return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('message', __($status))
-            : back()->withErrors(['email' => [__($status)]]);
+        if ($status === Password::PASSWORD_RESET) {
+            flash()->info(__($status));
+
+            return back();
+        }
+
+        return back()->withErrors(['email' => __($status)]);
     }
 
     public function githubLogin(): \Symfony\Component\HttpFoundation\RedirectResponse|RedirectResponse
@@ -127,7 +132,6 @@ class AuthController extends Controller
     {
         $githubUser = Socialite::driver('github')->user();
 
-        // TODO 3  lesson move to custom table
         $user = User::query()->updateOrCreate([
             'github_id' => $githubUser->id,
         ], [

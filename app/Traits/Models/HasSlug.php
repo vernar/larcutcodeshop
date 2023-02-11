@@ -6,10 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 trait HasSlug
 {
-    protected static function boot(): void
+    protected static function bootHasSlug(): void
     {
-        parent::boot();
-
         static::creating(function (Model $model) {
             $slugName          = $model->slug ?? str($model->{self::slugFrom()})->slug();
             $itemsWithSameSlug = self::where('slug', 'like', "$slugName%")->get();

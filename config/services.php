@@ -34,8 +34,7 @@ return [
     'github' => [
         'client_id'     => env('GITHUB_CLIENT_ID'),
         'client_secret' => env('GITHUB_CLIENT_SECRET'),
-        // TODO 3 lesson
-        'redirect'      => 'http://larcutcodeshop.mgdesktop.com/auth/socialite/github/callback/',
+        'redirect'      => env('APP_URL', 'http://localhost').'/'.env('GITHUB_CLIENT_CALLBACK_URL'),
     ],
 
 ];
