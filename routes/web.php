@@ -38,6 +38,12 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/reset-password', 'resetPasswordPost')
         ->middleware('guest')
         ->name('password.reset.post');
+
+    Route::get('/auth/socialite/github/login', 'githubLogin')
+        ->name('socialite.github.login');
+
+    Route::get('/auth/socialite/github/callback', 'githubCallback')
+        ->name('socialite.github.callback');
 });
 
 Route::get('/', HomeController::class)->name('home');
