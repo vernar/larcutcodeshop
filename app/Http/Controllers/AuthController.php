@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LoginPostFormRequest;
+use App\Http\Requests\LoginPostRequest;
 use App\Http\Requests\PasswordForgotPostRequest;
 use App\Http\Requests\PasswordResetPostRequest;
-use App\Http\Requests\registerPostFormRequest;
+use App\Http\Requests\RegisterPostRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
@@ -20,17 +20,12 @@ use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
-    public function index()
-    {
-        return $this->signUp();
-    }
-
     public function login()
     {
         return view('auth.login');
     }
 
-    public function loginPost(LoginPostFormRequest $request): RedirectResponse
+    public function loginPost(LoginPostRequest $request): RedirectResponse
     {
         if (!auth()->attempt($request->validated())) {
             return back()->withErrors([
@@ -48,7 +43,7 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    public function registerPost(registerPostFormRequest $request): RedirectResponse
+    public function registerPost(RegisterPostRequest $request): RedirectResponse
     {
         $user = User::query()->create([
             'name'     => $request->name,
@@ -132,7 +127,7 @@ class AuthController extends Controller
     {
         $githubUser = Socialite::driver('github')->user();
 
-        $user = User::query()->updateOrCreate([
+        $user = User::query()->firstOrCreate([
             'github_id' => $githubUser->id,
         ], [
             'name'     => $githubUser->name ?? 'none',

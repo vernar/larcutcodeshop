@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
+use Worksome\RequestFactories\Concerns\HasFactory;
 
 /**
  * @property string name
@@ -11,8 +12,10 @@ use Illuminate\Validation\Rules\Password;
  * @property string password
  * @property string remember_token
  */
-class registerPostFormRequest extends FormRequest
+class RegisterPostRequest extends FormRequest
 {
+    use HasFactory;
+
     public function authorize(): bool
     {
         return true;
