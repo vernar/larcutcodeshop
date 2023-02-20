@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Logging\Telegram;
+namespace Support\Logging\Telegram;
 
 use Monolog\Logger;
 
@@ -16,6 +16,7 @@ class TelegramLoggerFactory
     {
         $logger = new Logger('telegram');
         $logger->pushHandler(new TelegramLoggerHandler($config));
+
         return $logger;
     }
 }
