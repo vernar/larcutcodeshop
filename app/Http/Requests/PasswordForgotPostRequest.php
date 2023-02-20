@@ -3,9 +3,12 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Worksome\RequestFactories\Concerns\HasFactory;
 
 class PasswordForgotPostRequest extends FormRequest
 {
+    use HasFactory;
+
     public function authorize()
     {
         return auth()->guest();

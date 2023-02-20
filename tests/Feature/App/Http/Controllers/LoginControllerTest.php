@@ -52,4 +52,22 @@ class LoginControllerTest extends TestCase
             ->assertRedirect(route('home'));
     }
 
+    public function testIncorrectLogin()
+    {
+        $password = 'correct-12345678';
+        $user     = UserFactory::new()->create([
+            'email'    => 'testuser@gmail.com',
+            'password' => bcrypt($password),
+        ]);
+
+        $password = 'incorrect-12345678';
+        $request  = LoginPostRequest::factory()->create([
+            'email'    => $user->email,
+            'password' => $password,
+        ]);
+
+        $response = $this->post(action([LoginController::class, 'handle']), $request);
+        $response->assertInvalid()->assertSessionHasErrors(["email" => "Пользователь не найден"]);
+        $response->assertStatus(302);
+    }
 }
