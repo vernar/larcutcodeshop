@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Models\HasSlug;
+use App\Traits\Models\HasThumbnail;
 use Faker\Factory as Faker;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,6 +24,7 @@ class Product extends Model
 {
     use HasFactory;
     use HasSlug;
+    use HasThumbnail;
 
     protected $fillable = [
         'title',
@@ -34,13 +36,18 @@ class Product extends Model
         'sorting',
     ];
 
+    protected function thumbnailDir(): string
+    {
+        return 'products';
+    }
+
+
     public function scopeHomepage(Builder $query): Builder|self
     {
         return $query->where('on_home_page', true)
             ->orderBy('sorting')
             ->limit(6);
     }
-
 
     public function brand(): BelongsTo
     {
@@ -68,5 +75,4 @@ class Product extends Model
             $product->save();
         }
     }
-
 }

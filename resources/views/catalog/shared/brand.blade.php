@@ -1,6 +1,6 @@
 <a href="#" class="p-6 rounded-xl bg-card hover:bg-card/60">
     <div class="h-12 md:h-16">
-        <img src="{{ $item->thumbnail }}"
+        <img src="{{ $item->makeThumbnail('70x70') }}"
              class="object-contain w-full h-full"
              alt="{{ $item->title }}"
         >
