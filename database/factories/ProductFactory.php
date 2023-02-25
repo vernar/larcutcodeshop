@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Brand;
 use App\Models\Product;
+use Domain\Catalog\Models\Brand;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -25,7 +25,7 @@ class ProductFactory extends Factory
                 base_path('tests/Fixtures/images/products'),
                 'images/products'
             ),
-            'price'        => $this->faker->numberBetween(1000, 100000),
+            'price'        => $this->faker->numberBetween(100, 10000000),
             'on_home_page' => $this->faker->boolean(),
             'sorting'      => $this->faker->numberBetween(1, 999),
         ];
