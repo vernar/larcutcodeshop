@@ -29,8 +29,6 @@ class AuthRegistrar implements RouteRegistrar
             });
 
             Route::controller(RegisterController::class)->group(function () {
-                // TODO 3 routes
-
                 Route::get('/register', 'page')
                     ->name('register');
                 Route::post('/register', 'handle')
