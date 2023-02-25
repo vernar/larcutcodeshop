@@ -8,11 +8,7 @@
     @vite(['resources/css/app.css', 'resources/sass/main.sass', 'resources/js/app.js' ])
 </head>
 <body class="antialiased">
-@if($message = flash()->get())
-    <div class="{{ $message->getClass() }}">
-        {{ $message->getMessage() }}
-    </div>
-@endif
+@include('shared.flash')
 <main class="md:min-h-screen md:flex md:items-center md:justify-center py-16 lg:py-20">
     <div class="container">
 

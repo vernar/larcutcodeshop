@@ -17,6 +17,6 @@ class FakerFileProvider extends Base
             false
         );
 
-        return Str::finish('app/public/'.$targetStoragePath, '/').$fileName;
+        return Str::finish('storage/'.$targetStoragePath, '/').$fileName;
     }
 }
