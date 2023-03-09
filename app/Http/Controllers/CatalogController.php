@@ -25,8 +25,26 @@ class CatalogController extends Controller
             ->limit(10)
             ->get();
 
+        /* scaute search
+                $products = Product::search(request('s'))->query(function (Builder $query) use ($category) {
+                    $query->select(['id', 'title', 'slug', 'price', 'thumbnail'])
+                        ->when($category->exists, function (Builder $q) use ($category) {
+                            $q->whereRelation(
+                                'categories',
+                                'categories.id',
+                                '=',
+                                $category->id
+                            );
+                        })
+                        ->filtered()
+                        ->sorted();
+                })->paginate(6);
+        */
         $products = Product::query()
             ->select(['id', 'title', 'slug', 'price', 'thumbnail'])
+            ->when(request('s'), function (Builder $query) {
+                $query->whereFullText(['title', 'text'], request('s'));
+            })
             ->when($category->exists, function (Builder $q) use ($category) {
                 $q->whereRelation(
                     'categories',
