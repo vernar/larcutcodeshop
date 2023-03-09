@@ -4,6 +4,8 @@ namespace Domain\Catalog\Models;
 
 use App\Models\Product;
 use Database\Factories\CategoryFactory;
+use Domain\Catalog\Collection\CategoryCollection;
+use Domain\Catalog\QueryBuilders\CategoryQueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +16,7 @@ use Support\Traits\Models\HasThumbnail;
 /**
  * @property string title
  * @property string slug
- * @method static Builder|self query()
+ * @method static CategoryQueryBuilder|Category query()
  * @method void homepage(Builder $query)
  */
 class Category extends Model
@@ -40,11 +42,14 @@ class Category extends Model
         return $this->belongsToMany(Product::class);
     }
 
-    public function scopeHomepage(Builder $query): Builder|self
+    public function newEloquentBuilder($query): CategoryQueryBuilder
     {
-        return $query->where('on_home_page', true)
-            ->orderBy('sorting')
-            ->limit(6);
+        return new CategoryQueryBuilder($query);
+    }
+
+    public function newCollection(array $models = []): CategoryCollection
+    {
+        return new CategoryCollection($models);
     }
 
     protected static function newFactory(): CategoryFactory

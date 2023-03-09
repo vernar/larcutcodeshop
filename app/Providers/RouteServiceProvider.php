@@ -11,6 +11,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use RuntimeException;
+use Symfony\Component\HttpFoundation\Response;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -48,13 +49,13 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function configureRateLimiting()
     {
-        RateLimiter::for('golobal', function (Request $request) {
+        RateLimiter::for('global', function (Request $request) {
             return Limit::perMinute(5000)
                 ->by($request->user()?->id ?: $request->ip())
                 ->response(function (Request $request, $headers) {
                     return response(
                         "LarCutCodeShop: Take it easy",
-                        \Symfony\Component\HttpFoundation\Response::HTTP_TOO_MANY_REQUESTS,
+                        Response::HTTP_TOO_MANY_REQUESTS,
                         $headers
                     );
                 });
