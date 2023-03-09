@@ -48,8 +48,12 @@ class Price implements \Stringable
 
     public function __toString()
     {
-        return number_format($this->value, 2, ',', ' ').' '.
-            $this->symbol();
+        return number_format(
+                $this->value(),
+                2,
+                ',',
+                ' '
+            ).' '.$this->symbol();
     }
 
 }

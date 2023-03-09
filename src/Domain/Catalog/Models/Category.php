@@ -14,6 +14,7 @@ use Support\Traits\Models\HasSlug;
 use Support\Traits\Models\HasThumbnail;
 
 /**
+ * @property string id
  * @property string title
  * @property string slug
  * @method static CategoryQueryBuilder|Category query()
